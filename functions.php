@@ -23,10 +23,12 @@ function university_features () {
 
 add_action('after_setup_theme', 'university_features');
 
-// The best approach to deal with custom post types is to put them inside the mu-plugins folder
+// The best approach to deal with custom post types is to put the code inside the mu-plugins folder
 // Im keeping it here to keep it in git repo
 function university_post_types () {
     register_post_type('event', array(
+        'rewrite' => array('slug' => 'events'),
+        'has_archive' => true,
         'public' => true,
         'labels' => array(
             'name' => 'Events',
