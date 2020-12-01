@@ -27,6 +27,8 @@ add_action('after_setup_theme', 'university_features');
 // Im keeping it here to keep it in git repo
 function university_post_types () {
     register_post_type('event', array(
+        'show_in_rest' => true,
+        'supports' => array('title', 'editor', 'excerpt'),
         'rewrite' => array('slug' => 'events'),
         'has_archive' => true,
         'public' => true,
