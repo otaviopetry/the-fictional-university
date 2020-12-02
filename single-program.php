@@ -28,7 +28,7 @@
 
     <?php
         $today = date('Ymd'); 
-        $homepageEvents = new WP_Query(array(
+        $programEvents = new WP_Query(array(
             'posts_per_page' => 2,
             'post_type' => 'event',
             'orderby' => 'meta_value_num',
@@ -49,40 +49,49 @@
                 )
             )
         ));
-
-        while ($homepageEvents->have_posts()) : $homepageEvents->the_post();
     ?>
-    <div class="event-summary">
-        <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
-            <span class="event-summary__month">
-                <?php 
-                    $eventDate = new DateTime(get_field('event_date'));
-                    echo $eventDate->format('M');
-                ?>
-            </span>
-            <span class="event-summary__day">
-                <?php
-                    echo $eventDate->format('d');
-                ?>
-            </span>
-        </a>
-        <div class="event-summary__content">
-            <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-            <p>
-                <?php 
-                    if (has_excerpt()) {
-                        // use get_the_excerpt here to deal with markup ourselves
-                        echo get_the_excerpt();
-                    } else {
-                        echo wp_trim_words(get_the_content(), 18);
-                    }
-                ?>                
-                <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
-            </p>
-        </div>
-    </div>
 
-    <?php endwhile; ?>
+    <?php if ($programEvents->have_posts()) : ?>
+
+        <hr class="section-break">
+
+        <h2 class="headline headline--medium">Upcoming <?php echo get_the_title(); ?> events</h2>
+
+        <?php while ($programEvents->have_posts()) : $programEvents->the_post(); ?>
+        
+        <div class="event-summary">
+            <a class="event-summary__date t-center" href="<?php the_permalink(); ?>">
+                <span class="event-summary__month">
+                    <?php 
+                        $eventDate = new DateTime(get_field('event_date'));
+                        echo $eventDate->format('M');
+                    ?>
+                </span>
+                <span class="event-summary__day">
+                    <?php
+                        echo $eventDate->format('d');
+                    ?>
+                </span>
+            </a>
+            <div class="event-summary__content">
+                <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
+                <p>
+                    <?php 
+                        if (has_excerpt()) {
+                            // use get_the_excerpt here to deal with markup ourselves
+                            echo get_the_excerpt();
+                        } else {
+                            echo wp_trim_words(get_the_content(), 18);
+                        }
+                    ?>                
+                    <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
+                </p>
+            </div>
+        </div>
+
+        <?php endwhile; ?>
+
+    <?php endif; ?>
 </div>
 
 <?php endwhile; ?>
