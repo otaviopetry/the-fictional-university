@@ -17,12 +17,16 @@ add_action('wp_enqueue_scripts', 'university_files');
 
 function university_features () {
     add_theme_support('title-tag');
+    add_theme_support('post-thumbnails');
+    add_image_size('professor-landscape', 400, 260, true);
+    add_image_size('professor-portrait', 480, 650, true);
     register_nav_menu('footer-location-1', 'Footer location 1');
     register_nav_menu('footer-location-2', 'Footer location 2');
 }
 
 add_action('after_setup_theme', 'university_features');
 
+// CUSTOM POST TYPES
 // The best approach to deal with custom post types is to put the code inside the mu-plugins folder
 // Im keeping it here to keep it in git repo
 function university_post_types () {
@@ -64,7 +68,7 @@ function university_post_types () {
     // PROFESSOR POST TYPE
     register_post_type('professor', array(
         'show_in_rest' => true,
-        'supports' => array('title', 'editor'),
+        'supports' => array('title', 'editor', 'thumbnail'),
         'public' => true,
         'labels' => array(
             'name' => 'Professors',
