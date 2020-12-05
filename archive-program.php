@@ -1,16 +1,9 @@
-<?php
-get_header();
-?>
+<?php get_header(); ?>
 
-<div class="page-banner">
-    <div class="page-banner__bg-image" style="background-image: url(<?php echo get_theme_file_uri('images/ocean.jpg'); ?>);"></div>
-    <div class="page-banner__content container container--narrow">
-        <h1 class="page-banner__title">Our Programs<h1>
-        <div class="page-banner__intro">
-        <p>Check all our graduation programs.</p>
-        </div>
-    </div>  
-</div>
+<?php page_banner(array(
+    'title' => 'All Programs',
+    'subtitle' => 'Check all our graduation programs and find the one that fits you!'
+)); ?>
 
 <div class="container container--narrow page-section">
 
