@@ -33,9 +33,18 @@
     height: 480px;
 }
 
+.campus-page #campuses-map {
+    height: 280px;
+    margin-top: 2rem;
+}
+
 #campuses-map .my-marker-icon {
-    background-image: url('../wp-content/themes/fictional-university-theme/images/pin.svg');
+    background-image: url('http://fictional-university.local/wp-content/themes/fictional-university-theme/images/pin.svg');
     background-repeat: no-repeat;
     background-position: center;
     opacity: 0.9;
+}
+
+.campus-page .leaflet-popup-pane {
+    display: none;
 }

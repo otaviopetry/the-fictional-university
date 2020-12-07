@@ -4,29 +4,40 @@
 
 <?php page_banner(); ?>
 
-<div class="container container--narrow page-section">
+<div class="container container--narrow page-section campus-page">
 
     <div class="metabox metabox--position-up metabox--with-home-link">
         <p>
-            <a class="metabox__blog-home-link" href="<?php echo get_post_type_archive_link('program'); ?>">
-                <i class="fa fa-home" aria-hidden="true"></i> All Programs
+            <a class="metabox__blog-home-link" href="<?php echo get_post_type_archive_link('campus'); ?>">
+                <i class="fa fa-home" aria-hidden="true"></i> All Campuses
             </a> <span class="metabox__main"><?php the_title(); ?>
         </p>
     </div>
 
     <div class="generic-content">
         <?php the_content(); ?>
+
+        <div id="campuses-map"></div>
+
+        <div 
+            class="marker" 
+            data-lat="<?php echo get_field('latitude'); ?>" 
+            data-lng="<?php echo get_field('longitude'); ?>"
+            data-address="<?php echo get_field('address'); ?>"
+            data-campus-name="<?php echo get_the_title(); ?>"
+            data-campus-link="<?php echo get_permalink(); ?>"
+        ></div>
     </div>
 
     <?php
-        $relatedProfessors = new WP_Query(array(
+        $relatedPrograms = new WP_Query(array(
             'posts_per_page' => -1,
-            'post_type' => 'professor',
+            'post_type' => 'program',
             'orderby' => 'title',
             'order' => 'ASC',
             'meta_query' => array(
                 array(
-                    'key' => 'related_programs',
+                    'key' => 'related_campus',
                     'compare' => 'LIKE',
                     'value' => '"' . get_the_ID() . '"' 
                     // here we add the quotes to check for the exact post id which will be wrapped in quotes inside the serialized array
@@ -35,21 +46,18 @@
         ));
     ?>
 
-    <?php if ($relatedProfessors->have_posts()) : ?>
+    <?php if ($relatedPrograms->have_posts()) : ?>
 
         <hr class="section-break">
 
-        <h2 class="headline headline--medium"> <?php echo get_the_title(); ?> Professors</h2>
+        <h2 class="headline headline--medium">Programs Available at this Campus</h2>
 
-        <ul class="professor-cards">
+        <ul class="min-list link-list">
 
-            <?php while ($relatedProfessors->have_posts()) : $relatedProfessors->the_post(); ?>
+            <?php while ($relatedPrograms->have_posts()) : $relatedPrograms->the_post(); ?>
             
-                <li class="professor-card__list-item">
-                    <a class="professor-card" href="<?php the_permalink(); ?>">
-                        <img class="professor-card__image" src="<?php the_post_thumbnail_url('professor-landscape'); ?>" />
-                        <span class="professor-card__name"><?php the_title(); ?></span>
-                    </a>
+                <li>
+                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 </li>
 
             <?php endwhile; ?>
@@ -92,28 +100,10 @@
         <?php 
             while ($programEvents->have_posts()) : $programEvents->the_post();
                 get_template_part('template-parts/content-event');
-            endwhile;
+            endwhile; 
         ?>
 
     <?php endif; wp_reset_postdata(); ?>
-
-    <hr class="section-break">
-
-    <?php
-        $relatedCampuses = get_field('related_campus');
-
-        if ($relatedCampuses) {
-            echo '<h2 class="headline headline--medium">' . get_the_title() . ' is available at these campuses:</h2>';
-
-            echo '<ul class="min-list link-list"';
-
-            foreach ($relatedCampuses as $campus) {
-                ?><li><a href="<?php echo get_the_permalink($campus); ?>"><?php echo get_the_title($campus); ?></a></li><?php
-            }
-
-            echo '</ul>';
-        }
-    ?>
 </div>
 
 <?php endwhile; ?>

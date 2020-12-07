@@ -17,7 +17,7 @@ if (module.hot) {
 }
 
 // Leaflet
-var mymap = L.map('campuses-map').setView([-30.0368214, -51.2128475], 14);
+var campusesMap = L.map('campuses-map').setView([-30.0368214, -51.2128475], 14);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -26,7 +26,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     tileSize: 512,
     zoomOffset: -1,
     accessToken: env.mapbox_token
-}).addTo(mymap);
+}).addTo(campusesMap);
 
 let markers = document.querySelectorAll('.marker');
 
@@ -39,7 +39,7 @@ markers.forEach((marker) => {
   const campusName = marker.attributes['data-campus-name'].value;
   const campusLink = marker.attributes['data-campus-link'].value;
 
-  L.marker([latitude, longitude], { icon: markerIcon }).addTo(mymap).bindPopup(
+  L.marker([latitude, longitude], { icon: markerIcon }).addTo(campusesMap).bindPopup(
     `<div>
       <h4>${campusName}</h4>
       <p>${address}</p>
@@ -47,4 +47,3 @@ markers.forEach((marker) => {
     </div>`
   );
 })
-
