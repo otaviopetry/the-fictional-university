@@ -17,7 +17,7 @@
     <div class="generic-content">
         <?php the_content(); ?>
 
-        <div id="campuses-map"></div>
+        <div id="campus-map"></div>
 
         <div 
             class="marker" 
@@ -69,7 +69,7 @@
     <?php        
         $today = date('Ymd'); 
         $programEvents = new WP_Query(array(
-            'posts_per_page' => 2,
+            'posts_per_page' => -1,
             'post_type' => 'event',
             'orderby' => 'meta_value_num',
             'meta_key' => 'event_date',
@@ -82,7 +82,7 @@
                     'type' => 'numeric'
                 ),
                 array(
-                    'key' => 'related_programs',
+                    'key' => 'event_location',
                     'compare' => 'LIKE',
                     'value' => '"' . get_the_ID() . '"' 
                     // here we add the quotes to check for the exact post id which will be wrapped in quotes inside the serialized array
@@ -95,7 +95,7 @@
 
         <hr class="section-break">
 
-        <h2 class="headline headline--medium">Upcoming <?php echo get_the_title(); ?> events</h2>
+        <h2 class="headline headline--medium">Upcoming events at <?php echo get_the_title(); ?> Campus</h2>
 
         <?php 
             while ($programEvents->have_posts()) : $programEvents->the_post();
@@ -108,4 +108,4 @@
 
 <?php endwhile; ?>
 
-<?php get_footer(); ?>
+<?php get_footer('single-campus'); ?>
