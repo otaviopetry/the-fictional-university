@@ -29,6 +29,13 @@
 @import "modules/metabox";
 @import "modules/post-item";
 
-#campus-map {
-    height: 180px;
+#campuses-map {
+    height: 480px;
+}
+
+#campuses-map .my-marker-icon {
+    background-image: url('../wp-content/themes/fictional-university-theme/images/pin.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.9;
 }

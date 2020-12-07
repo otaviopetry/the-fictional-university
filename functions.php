@@ -32,14 +32,14 @@ function university_files () {
     wp_enqueue_style('google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
     wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('leaflet-css', get_theme_file_uri('/css/leaflet.css'), NULL, NULL);
-    wp_enqueue_script('leaflet-js', get_theme_file_uri('/js/leaflet.js'), NULL, NULL, true);
+    wp_enqueue_script('leaflet-js', get_theme_file_uri('/js/leaflet.js'), NULL, NULL, false);
     
     if (strstr($_SERVER['SERVER_NAME'], 'fictional-university.local')) {
         wp_enqueue_script('main-javascript', 'http://localhost:3000/bundled.js', NULL, '1.0', true);
     } else {
         wp_enqueue_script('our-vendors-js', get_theme_file_uri('/bundled-assets/vendors~scripts.8c97d901916ad616a264.js'), NULL, '1.0', true);
-        wp_enqueue_script('main-javascript', get_theme_file_uri('/bundled-assets/scripts.662bc2a7054ef8f0e69f.js'), NULL, '1.0', true);
-        wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.662bc2a7054ef8f0e69f.css'));
+        wp_enqueue_script('main-javascript', get_theme_file_uri('/bundled-assets/scripts.1249b8163eca486ec433.js'), NULL, '1.0', true);
+        wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.1249b8163eca486ec433.css'));
     }    
 }
 
