@@ -7,7 +7,11 @@ class Search {
 		this.openButton = $(".js-search-trigger");
 		this.closeButton = $(".search-overlay__close");
 		this.searchOverlay = $(".search-overlay");
+		this.searchField = $("#search-term");
+		
 		this.isOpen = false;
+
+		this.typingTimer;
 
 		// Fire event listeners when the Search object is created
 		this.events();
@@ -19,6 +23,8 @@ class Search {
 		this.closeButton.on('click', this.closeOverlay.bind(this));
 
 		$(document).on('keydown', this.keyPressDispatcher.bind(this));
+
+		this.searchField.on('keydown', this.typingLogic.bind(this));
 	}
 
 	
@@ -45,6 +51,13 @@ class Search {
 		if (event.keyCode == 27 && this.isOpen) {
 			this.closeOverlay();
 		}
+	}
+
+	typingLogic() {
+		clearTimeout(this.typingTimer);
+		this.typingTimer = setTimeout(() => {
+			console.log("Hello from typingLogic");
+		}, 1200);
 	}
 }
 
