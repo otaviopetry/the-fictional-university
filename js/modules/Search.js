@@ -12,6 +12,9 @@ class Search {
 		this.isOpen = false;
 
 		this.typingTimer;
+		this.resultsDiv = $("#search-overlay__results");
+		this.isSpinnerVisible = false;
+		this.previousValue;
 
 		// Fire event listeners when the Search object is created
 		this.events();
@@ -24,7 +27,7 @@ class Search {
 
 		$(document).on('keydown', this.keyPressDispatcher.bind(this));
 
-		this.searchField.on('keydown', this.typingLogic.bind(this));
+		this.searchField.on('keyup', this.typingLogic.bind(this));
 	}
 
 	
@@ -44,7 +47,7 @@ class Search {
 	}
 
 	keyPressDispatcher(event) {
-		if (event.keyCode === 83 && !this.isOpen) {
+		if (event.keyCode === 83 && !this.isOpen && !$("input, textarea").is(':focus')) {
 			this.openOverlay();
 		}
 
@@ -53,11 +56,28 @@ class Search {
 		}
 	}
 
+	getResults() {
+		this.resultsDiv.html("Imagine real search results here...");
+		this.isSpinnerVisible = false;
+	}
+
 	typingLogic() {
-		clearTimeout(this.typingTimer);
-		this.typingTimer = setTimeout(() => {
-			console.log("Hello from typingLogic");
-		}, 1200);
+		if (this.searchField.val() != this.previousValue) {
+            clearTimeout(this.typingTimer);
+            
+            if (this.searchField.val()) {
+                if (!this.isSpinnerVisible) {
+                    this.resultsDiv.html('<div class="spinner-loader"></div>');
+                    this.isSpinnerVisible = true;
+                }
+                this.typingTimer = setTimeout(this.getResults.bind(this), 1200);                
+            } else {
+                this.resultsDiv.html('');
+                this.isSpinnerVisible = false;
+            }						
+		}
+
+		this.previousValue = this.searchField.val();
 	}
 }
 
