@@ -70,7 +70,12 @@ class Search {
 			this.resultsDiv.html(`
 				<h2 class="search-overlay__section-title">General Information</h2>
 				${combinedResponse.length ? '<ul class="link-list min-list">' : '<p>No results found.</p>'  }				
-					${combinedResponse.map(thePost => `<li><a href="${thePost.link}">${thePost.title.rendered}</a></li>`).join('')}
+					${combinedResponse.map(thePost => `
+						<li>
+							<a href="${thePost.link}">${thePost.title.rendered}</a>
+							${thePost.authorName ? ` by ` + thePost.authorName : ''}
+						</li>
+					`).join('')}
 				${combinedResponse.length ? '</ul>' : ''}
 			`);
 			this.isSpinnerVisible = false;
