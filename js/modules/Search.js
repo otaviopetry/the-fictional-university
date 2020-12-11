@@ -60,14 +60,23 @@ class Search {
 	}
 
 	getResults() {
-		$.getJSON(`${universityData.root_url}/wp-json/wp/v2/posts?search=${this.searchField.val()}`, posts => {
+		$.when(
+			// Each request will be outputed to its correspondent parameter in the anonymous function on .then(), in order
+			$.getJSON(`${universityData.root_url}/wp-json/wp/v2/posts?search=${this.searchField.val()}`), 
+			$.getJSON(`${universityData.root_url}/wp-json/wp/v2/pages?search=${this.searchField.val()}`)
+		).then((posts, pages) => {
+			// The when method passes along with JSON data ([0]) information about the requests
+			const combinedResponse = posts[0].concat(pages[0]);
 			this.resultsDiv.html(`
 				<h2 class="search-overlay__section-title">General Information</h2>
-				${posts.length ? '<ul class="link-list min-list">' : '<p>No results found.</p>'  }				
-					${posts.map(thePost => `<li><a href="${thePost.link}">${thePost.title.rendered}</a></li>`).join('')}
-				${posts.length ? '</ul>' : ''}
+				${combinedResponse.length ? '<ul class="link-list min-list">' : '<p>No results found.</p>'  }				
+					${combinedResponse.map(thePost => `<li><a href="${thePost.link}">${thePost.title.rendered}</a></li>`).join('')}
+				${combinedResponse.length ? '</ul>' : ''}
 			`);
 			this.isSpinnerVisible = false;
+		}, () => {
+			// Second parameter is an error handling function
+			this.resultsDiv.html('<p>Unexpected error. Please try again.</p>');
 		});
 	}
 
