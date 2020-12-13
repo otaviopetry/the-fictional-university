@@ -105,11 +105,24 @@ class Search {
 						
 
 						<h2 class="search-overlay__section-title">Events</h2>
-						${response['events'].length ? '<ul class="link-list min-list">' : '<p>No events matches that search.</p>'  }				
-							${response['events'].map(thePost => `
-								<li><a href="${thePost.permalink}">${thePost.title}</a></li>
-							`).join('')}
-						${response['events'].length ? '</ul>' : ''}
+						${response['events'].length ? '' : '<p>No events matches that search.</p>'  }				
+						${response['events'].map(thePost => `
+							<div class="event-summary">
+								<a class="event-summary__date t-center" href="${thePost.permalink}">
+									<span class="event-summary__month">${thePost.month}</span>
+									<span class="event-summary__day">${thePost.day}</span>
+								</a>
+								<div class="event-summary__content">
+									<h5 class="event-summary__title headline headline--tiny">
+										<a href="${thePost.permalink}">${thePost.title}</a>
+									</h5>
+									<p>
+										${thePost.description}              
+										<a href="${thePost.permalink}" class="nu gray">Learn more</a>
+									</p>
+								</div>
+							</div>							
+						`).join('')}
 					</div>
 				</div>
 			`);		
