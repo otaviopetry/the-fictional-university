@@ -83,9 +83,14 @@ class Search {
 						${response['programs'].length ? '</ul>' : ''}
 
 						<h2 class="search-overlay__section-title">Professors</h2>
-						${response['professors'].length ? '<ul class="link-list min-list">' : '<p>No professor matches that search.</p>'  }				
+						${response['professors'].length ? '<ul class="professor-cards">' : '<p>No professor matches that search.</p>'  }				
 							${response['professors'].map(thePost => `
-								<li><a href="${thePost.permalink}">${thePost.title}</a></li>
+								<li class="professor-card__list-item">
+									<a class="professor-card" href="${thePost.permalink}">
+										<img class="professor-card__image" src="${thePost.image}" />
+										<span class="professor-card__name">${thePost.title}</span>
+									</a>
+								</li>
 							`).join('')}
 						${response['professors'].length ? '</ul>' : ''}
 						
