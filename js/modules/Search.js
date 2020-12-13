@@ -60,29 +60,56 @@ class Search {
 	}
 
 	getResults() {
-		$.when(
-			// Each request will be outputed to its correspondent parameter in the anonymous function on .then(), in order
-			$.getJSON(`${universityData.root_url}/wp-json/wp/v2/posts?search=${this.searchField.val()}`), 
-			$.getJSON(`${universityData.root_url}/wp-json/wp/v2/pages?search=${this.searchField.val()}`)
-		).then((posts, pages) => {
-			// The when method passes along with JSON data ([0]) information about the requests
-			const combinedResponse = posts[0].concat(pages[0]);
+		$.getJSON(`${universityData.root_url}/wp-json/university/v1/search?term=${this.searchField.val()}`, (response) => {
 			this.resultsDiv.html(`
-				<h2 class="search-overlay__section-title">General Information</h2>
-				${combinedResponse.length ? '<ul class="link-list min-list">' : '<p>No results found.</p>'  }				
-					${combinedResponse.map(thePost => `
-						<li>
-							<a href="${thePost.link}">${thePost.title.rendered}</a>
-							${thePost.authorName ? ` by ` + thePost.authorName : ''}
-						</li>
-					`).join('')}
-				${combinedResponse.length ? '</ul>' : ''}
-			`);
-			this.isSpinnerVisible = false;
-		}, () => {
-			// Second parameter is an error handling function
-			this.resultsDiv.html('<p>Unexpected error. Please try again.</p>');
+				<div class="row">
+					<div class="one-third">
+						<h2 class="search-overlay__section-title">General Information</h2>
+						${response['generalInfo'].length ? '<ul class="link-list min-list">' : '<p>No general information matches that search.</p>'  }				
+							${response['generalInfo'].map(thePost => `
+								<li>
+									<a href="${thePost.permalink}">${thePost.title}</a>
+									${thePost.postType == 'post' ? ` by ` + thePost.author : ''}
+								</li>
+							`).join('')}
+						${response['generalInfo'].length ? '</ul>' : ''}
+					</div>
+					<div class="one-third">
+						<h2 class="search-overlay__section-title">Programs</h2>
+						${response['programs'].length ? '<ul class="link-list min-list">' : `<p>No program matches that search. <a href="${universityData.root_url}/programs">View all programs</a></p>`  }				
+							${response['programs'].map(thePost => `
+								<li><a href="${thePost.permalink}">${thePost.title}</a></li>
+							`).join('')}
+						${response['programs'].length ? '</ul>' : ''}
+
+						<h2 class="search-overlay__section-title">Professors</h2>
+						${response['professors'].length ? '<ul class="link-list min-list">' : '<p>No professor matches that search.</p>'  }				
+							${response['professors'].map(thePost => `
+								<li><a href="${thePost.permalink}">${thePost.title}</a></li>
+							`).join('')}
+						${response['professors'].length ? '</ul>' : ''}
+						
+					</div>
+					<div class="one-third">
+						<h2 class="search-overlay__section-title">Campuses</h2>
+						${response['campuses'].length ? '<ul class="link-list min-list">' : `<p>No campuses matches that search. <a href="${universityData.root_url}/campuses">View all campuses</a></p>`  }				
+							${response['campuses'].map(thePost => `
+								<li><a href="${thePost.permalink}">${thePost.title}</a></li>
+							`).join('')}
+						${response['campuses'].length ? '</ul>' : ''}
+						
+
+						<h2 class="search-overlay__section-title">Events</h2>
+						${response['events'].length ? '<ul class="link-list min-list">' : '<p>No events matches that search.</p>'  }				
+							${response['events'].map(thePost => `
+								<li><a href="${thePost.permalink}">${thePost.title}</a></li>
+							`).join('')}
+						${response['events'].length ? '</ul>' : ''}
+					</div>
+				</div>
+			`);		
 		});
+		this.isSpinnerVisible = false;
 	}
 
 	typingLogic() {
