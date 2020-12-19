@@ -50,9 +50,9 @@ function university_files () {
     if (strstr($_SERVER['SERVER_NAME'], 'fictional-university.local')) {
         wp_enqueue_script('main-javascript', 'http://localhost:3000/bundled.js', NULL, '1.0', true);
     } else {
-        wp_enqueue_script('our-vendors-js', get_theme_file_uri('/bundled-assets/vendors~scripts.8c97d901916ad616a264.js'), NULL, '1.0', true);
-        wp_enqueue_script('main-javascript', get_theme_file_uri('/bundled-assets/scripts.1249b8163eca486ec433.js'), NULL, '1.0', true);
-        wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.1249b8163eca486ec433.css'));
+        wp_enqueue_script('our-vendors-js', get_theme_file_uri('/bundled-assets/vendors~scripts.a6d527facd974cdcaf68.js'), NULL, '1.0', true);
+        wp_enqueue_script('main-javascript', get_theme_file_uri('/bundled-assets/scripts.6237546ed43539e677de.js'), NULL, '1.0', true);
+        wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.6237546ed43539e677de.css'));
 	}
 	
 	wp_localize_script('main-javascript', 'universityData', array(
@@ -208,4 +208,25 @@ function noAdminBarForSubs () {
 	if (count($currentUser->roles) == 1 AND $currentUser->roles[0] == 'subscriber') {
 		show_admin_bar(false);
 	}
+}
+
+// Customize Login Screen
+
+add_filter('login_headerurl', 'ourHeaderUrl');
+
+function ourHeaderUrl () {
+	return esc_url(site_url('/'));
+}
+
+add_action('login_enqueue_scripts', 'ourLoginCSS');
+
+function ourLoginCSS () {
+	wp_enqueue_style('our-main-styles', get_theme_file_uri('/bundled-assets/styles.6237546ed43539e677de.css'));
+	wp_enqueue_style('google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');	
+}
+
+add_filter('login_headertitle', 'ourLoginTitle');
+
+function ourLoginTitle () {
+	return get_bloginfo('name');
 }
