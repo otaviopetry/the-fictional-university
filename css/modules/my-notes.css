@@ -142,6 +142,7 @@
   padding: 0 !important;
   margin: 0 !important;
   opacity: 0.5;
+  border-bottom: 0;
 }
 
 #my-notes li.fade-in-calc {
