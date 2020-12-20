@@ -4,16 +4,20 @@ class MyNotes {
 		axios.defaults.headers.common["X-WP-Nonce"] = universityData.nonce
 		this.deleteButtons = document.querySelectorAll('.delete-note');
 		this.editButtons = document.querySelectorAll('.edit-note');
+		this.saveButtons = document.querySelectorAll('.update-note');
 
 		this.events();			
 	}
 
 	events () {
-		this.deleteButtons.forEach((button) => {
+		this.deleteButtons.forEach(button => {
 			button.addEventListener('click', this.deleteNote);
 		})
-		this.editButtons.forEach((button) => {
+		this.editButtons.forEach(button => {
 			button.addEventListener('click', this.editNote.bind(this));
+		})
+		this.saveButtons.forEach(button => {
+			button.addEventListener('click', this.updateNote.bind(this));
 		})
 	}
 
@@ -26,6 +30,25 @@ class MyNotes {
 		} else {
 			this.makeNoteEditable(thisNote);
 		}
+	}
+
+	async updateNote (event) {
+		const thisNote = event.target.closest('li');
+
+		const updatedNote = {
+			'title': thisNote.querySelector('.note-title-field').value,
+			'content': thisNote.querySelector('.note-body-field').value
+		}
+
+		await axios.post(`${universityData.root_url}/wp-json/wp/v2/note/${thisNote.dataset.id}`, updatedNote)
+			.then(response => {
+				console.log('Note updated successfully.');
+				console.log(response);
+				this.makeNoteReadOnly(thisNote);				
+			}).catch(error => {
+				console.log('Something went wrong.');
+				console.log(error);
+			})
 	}
 
 	async deleteNote (event) {
