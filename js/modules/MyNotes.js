@@ -13,7 +13,7 @@ class MyNotes {
 			button.addEventListener('click', this.deleteNote);
 		})
 		this.editButtons.forEach((button) => {
-			button.addEventListener('click', this.editNote);
+			button.addEventListener('click', this.editNote.bind(this));
 		})
 	}
 
@@ -21,11 +21,11 @@ class MyNotes {
 	editNote (event) {
 		const thisNote = event.target.closest('li');
 
-		thisNote.querySelectorAll('.note-title-field, .note-body-field').forEach(field => {
-			field.removeAttribute('readonly');
-			field.classList.add('note-active-field');
-		});
-		thisNote.querySelector('.update-note').classList.add('update-note--visible')
+		if (thisNote.dataset.state == 'editable') {
+			this.makeNoteReadOnly(thisNote);
+		} else {
+			this.makeNoteEditable(thisNote);
+		}
 	}
 
 	async deleteNote (event) {
@@ -42,6 +42,30 @@ class MyNotes {
 				console.log('Something went wrong.');
 				console.log(error);
 			})
+	}
+
+	makeNoteEditable (thisNote) {
+		thisNote.querySelector('.edit-note').innerHTML = `
+			<i class="fa fa-times" aria-hidden="true"></i> Cancel
+		`;
+		thisNote.querySelectorAll('.note-title-field, .note-body-field').forEach(field => {
+			field.removeAttribute('readonly');
+			field.classList.add('note-active-field');
+		});
+		thisNote.querySelector('.update-note').classList.add('update-note--visible');
+		thisNote.setAttribute('data-state', 'editable');
+	}
+
+	makeNoteReadOnly (thisNote) {
+		thisNote.querySelector('.edit-note').innerHTML = `
+			<i class="fa fa-pencil" aria-hidden="true"></i> Edit
+		`;
+		thisNote.querySelectorAll('.note-title-field, .note-body-field').forEach(field => {
+			field.setAttribute('readonly', 'readonly');
+			field.classList.remove('note-active-field');
+		});
+		thisNote.querySelector('.update-note').classList.remove('update-note--visible');
+		thisNote.removeAttribute('data-state');
 	}
 }
 
