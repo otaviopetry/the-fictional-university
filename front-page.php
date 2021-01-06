@@ -31,7 +31,11 @@
                         'type' => 'numeric'
                     )
                 )
-            ));
+			));
+			
+			if (!$homepageEvents->have_posts()) {
+				echo '<div class="no-events">No upcoming events.</div>';
+			}
 
             while ($homepageEvents->have_posts()) : $homepageEvents->the_post();
 
