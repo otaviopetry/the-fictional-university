@@ -35,7 +35,7 @@ class MyNotes {
 		const newNote = {
 			'title': newNoteTitleInput.value,
 			'content': newNoteTitleBody.value,
-			'status': 'publish'
+			'status': 'private'
 		}
 
 		await axios.post(`${universityData.root_url}/wp-json/wp/v2/note/`, newNote)

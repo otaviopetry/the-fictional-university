@@ -152,6 +152,8 @@ function university_post_types () {
 	
 	// NOTE POST TYPE
     register_post_type('note', array(
+		'capability_type' => 'note',
+		'map_meta_cap' => true,
         'show_in_rest' => true,
         'supports' => array('title', 'editor'),
 		'public' => false,
@@ -244,4 +246,15 @@ add_filter('login_headertitle', 'ourLoginTitle');
 
 function ourLoginTitle () {
 	return get_bloginfo('name');
+}
+
+// Force note posts to be private
+add_filter('wp_insert_post_data', 'makeNotePrivate');
+
+function makeNotePrivate ($data) {
+	if ($data['post_type'] == 'note' AND $data['post_status'] != 'trash') {
+		$data['post_status'] = "private";
+	}
+
+	return $data;
 }
