@@ -5,23 +5,64 @@ class MyNotes {
 		this.deleteButtons = document.querySelectorAll('.delete-note');
 		this.editButtons = document.querySelectorAll('.edit-note');
 		this.saveButtons = document.querySelectorAll('.update-note');
+		this.submitButton = document.querySelector('.submit-note');
 
 		this.events();			
 	}
 
 	events () {
-		this.deleteButtons.forEach(button => {
-			button.addEventListener('click', this.deleteNote);
+		document.querySelector('#my-notes').addEventListener('click', (event) => {
+			if (event.target.classList.contains('delete-note')) {
+				this.deleteNote(event);
+			}
+			if (event.target.classList.contains('edit-note')) {
+				this.editNote(event);
+			}
+			if (event.target.classList.contains('update-note')) {
+				this.updateNote(event);
+			}
 		})
-		this.editButtons.forEach(button => {
-			button.addEventListener('click', this.editNote.bind(this));
-		})
-		this.saveButtons.forEach(button => {
-			button.addEventListener('click', this.updateNote.bind(this));
-		})
+		
+		this.submitButton.addEventListener('click', this.createNote.bind(this));
 	}
 
-	// Methods will go below
+	// Methods
+	async createNote (event) {
+		const newNoteTitleInput = document.querySelector('.new-note-title');
+		const newNoteTitleBody = document.querySelector('.new-note-body');
+		const notesFeed = document.querySelector('#my-notes');
+
+		const newNote = {
+			'title': newNoteTitleInput.value,
+			'content': newNoteTitleBody.value,
+			'status': 'publish'
+		}
+
+		await axios.post(`${universityData.root_url}/wp-json/wp/v2/note/`, newNote)
+			.then(response => {
+				console.log('Note saved successfully.');
+				console.log(response);
+				newNoteTitleInput.value = '';
+				newNoteTitleBody.value = '';
+
+				const showNewNote = document.createElement('li');
+				showNewNote.setAttribute('data-id', response.data.id);
+				showNewNote.innerHTML = `
+					<input readonly class="note-title-field" type="text" value="${response.data.title.raw}">
+					<span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+					<span class="delete-note"><i class="fa fa-pencil" aria-hidden="true"></i> Delete</span>
+					<textarea readonly class="note-body-field">${response.data.content.raw}</textarea>
+					<span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+				`;
+	
+				notesFeed.prepend(showNewNote);		
+
+			}).catch(error => {
+				console.log('Something went wrong.');
+				console.log(error);
+			})	
+	}
+
 	editNote (event) {
 		const thisNote = event.target.closest('li');
 

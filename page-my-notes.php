@@ -11,6 +11,14 @@
 <?php page_banner(); ?>
 
 <div class="container container--narrow page-section">
+
+	<div class="create-note">
+		<h2 class="headline headline--medium">Create New Note</h2>
+		<input type="text" class="new-note-title" placeholder="Note title">
+		<textarea class="new-note-body" name="" id="" cols="30" rows="10" placeholder="What's your note?"></textarea>
+		<span class="submit-note">Create note</span>
+	</div>
+
 	<ul class="min-list link-list" id="my-notes">
 		<?php
 			$userNotes = new WP_Query(array(
