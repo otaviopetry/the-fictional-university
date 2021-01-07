@@ -40,6 +40,10 @@ class MyNotes {
 
 		await axios.post(`${universityData.root_url}/wp-json/wp/v2/note/`, newNote)
 			.then(response => {
+				if (response.data == 'You have reached your post limit') {
+					document.querySelector('.note-limit-message').classList.add('active');
+					return;
+				}
 				console.log('Note saved successfully.');
 				console.log(response);
 				newNoteTitleInput.value = '';
@@ -55,8 +59,7 @@ class MyNotes {
 					<span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
 				`;
 	
-				notesFeed.prepend(showNewNote);		
-
+				notesFeed.prepend(showNewNote);
 			}).catch(error => {
 				console.log('Something went wrong.');
 				console.log(error);
@@ -101,6 +104,7 @@ class MyNotes {
 				console.log(response);
 				setTimeout(() => {
 					thisNote.classList.add('fade-out');
+					document.querySelector('.note-limit-message').classList.remove('active');
 				}, 100)
 			}).catch(error => {
 				console.log('Something went wrong.');
