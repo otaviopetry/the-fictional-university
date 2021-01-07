@@ -261,7 +261,7 @@ function makeNotePrivate ($data, $postarr) {
 	if ($data['post_type'] == 'note') {
 		// check if user still havent reached post limit and it is a new post (not a update/delete request)
 		if (count_user_posts(get_current_user_id(), 'note') >= 5 AND !$postarr['ID']) {
-			die('You have reached your post limit');	
+			die('You have reached your note limit');	
 		}
 		// if not, sanitize it
 		$data['post_title'] = sanitize_text_field($data['post_title']);
