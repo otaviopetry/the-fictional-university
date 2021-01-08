@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 class Like {
 	constructor () {
 		this.likeBox = document.querySelector('.like-box');
@@ -21,12 +23,24 @@ class Like {
 		}
 	}
 
-	createLike () {
-		alert('Uhul');
+	async createLike () {
+		try {
+			const response = await axios.post(universityData.root_url + '/wp-json/university/v1/manageLike');
+
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
-	deleteLike () {
-		alert('Oh no');
+	async deleteLike () {
+		try {
+			const response = await axios.delete(universityData.root_url + '/wp-json/university/v1/manageLike');
+
+			console.log(response);
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
 
