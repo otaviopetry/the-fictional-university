@@ -17,15 +17,17 @@ class Like {
 		const currentLikeBox = event.target.closest('.like-box');
 
 		if (currentLikeBox.dataset.exists == 'yes') {
-			this.deleteLike();
+			this.deleteLike(currentLikeBox);
 		} else {
-			this.createLike();
+			this.createLike(currentLikeBox);
 		}
 	}
 
-	async createLike () {
+	async createLike (currentLikeBox) {
 		try {
-			const response = await axios.post(universityData.root_url + '/wp-json/university/v1/manageLike');
+			const response = await axios.post(universityData.root_url + '/wp-json/university/v1/manageLike', {
+				'professorId': currentLikeBox.dataset.professor
+			});
 
 			console.log(response);
 		} catch (error) {
