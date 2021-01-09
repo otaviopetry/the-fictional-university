@@ -25,21 +25,23 @@
 						));
 
 						$userLiked = 'no';
-						$checkUserLike = new WP_Query(array(
-							'author' => get_current_user_id(),
-							'post_type' => 'like',
-							'meta_query' => array(
-								array(
-									'key' => 'liked_professor_id',
-									'compare' => '=',
-									'value' => get_the_ID()
+
+						if (is_user_logged_in()) {
+							$checkUserLike = new WP_Query(array(
+								'author' => get_current_user_id(),
+								'post_type' => 'like',
+								'meta_query' => array(
+									array(
+										'key' => 'liked_professor_id',
+										'compare' => '=',
+										'value' => get_the_ID()
+									)
 								)
-							)
-						));
-						if ($checkUserLike->found_posts) {
-							$userLiked = 'yes';
+							));
+							if ($checkUserLike->found_posts) {
+								$userLiked = 'yes';
+							}
 						}
-												
 					?>
 
 					<span class="like-box" data-professor="<?php the_ID(); ?>" data-exists="<?php echo $userLiked; ?>">
