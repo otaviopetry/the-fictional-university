@@ -2,10 +2,12 @@ import axios from 'axios';
 
 class Like {
 	constructor () {
-		axios.defaults.headers.common["X-WP-Nonce"] = universityData.nonce
-		this.likeBox = document.querySelector('.like-box');
+		if (document.querySelector('.like-box')) {
+			axios.defaults.headers.common["X-WP-Nonce"] = universityData.nonce
+			this.likeBox = document.querySelector('.like-box');
 
-		this.events();		
+			this.events();	
+		}
 	}
 
 	events () {
