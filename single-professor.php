@@ -44,7 +44,7 @@
 						}
 					?>
 
-					<span class="like-box" data-professor="<?php the_ID(); ?>" data-exists="<?php echo $userLiked; ?>">
+					<span class="like-box" data-like="<?php echo $checkUserLike->posts[0]->ID; ?>" data-professor="<?php the_ID(); ?>" data-exists="<?php echo $userLiked; ?>">
 						<i class="fa fa-heart-o" aria-hidden="true"></i>
 						<i class="fa fa-heart" aria-hidden="true"></i>
 						<span class="like-count">
