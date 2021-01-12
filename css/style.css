@@ -45,7 +45,7 @@
 
 #campuses-map .my-marker-icon,
 #campus-map .my-marker-icon {
-    background-image: url('http://fictional-university.local/wp-content/themes/fictional-university-theme/images/pin.svg');
+    background-image: url('/wp-content/themes/fictional-university-theme/images/pin.svg');
     background-repeat: no-repeat;
     background-position: center;
     opacity: 0.9;
