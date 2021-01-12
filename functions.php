@@ -189,6 +189,20 @@ function university_post_types () {
         ),
         'menu_icon' => 'dashicons-heart'		
 	));
+
+	// FEATURED SLIDE POST TYPE
+	register_post_type('featured-slide', array(
+		'public' => true,
+		'show_ui' => true,
+		'labels' => array(
+			'name' => 'Featured Slides',
+			'add_new_item' => 'Add New Slide',
+			'edit_item' => 'Edit Slide',
+			'all_items' => 'All Slides',
+			'singular_name' => 'Featured Slide'
+		),
+		'menu_icon' => 'dashicons-images-alt'
+	));
 }
 
 add_action('init', 'university_post_types');
