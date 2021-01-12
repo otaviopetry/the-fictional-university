@@ -94,33 +94,34 @@
 <div class="hero-slider">
     <div data-glide-el="track" class="glide__track">
     <div class="glide__slides">
-        <div class="hero-slider__slide" style="background-image: url(<?php echo get_theme_file_uri('images/bus.jpg'); ?>);">
-        <div class="hero-slider__interior container">
-            <div class="hero-slider__overlay">
-            <h2 class="headline headline--medium t-center">Free Transportation</h2>
-            <p class="t-center">All students have free unlimited bus fare.</p>
-            <p class="t-center no-margin"><a href="#" class="btn btn--blue">Learn more</a></p>
-            </div>
-        </div>
-        </div>
-        <div class="hero-slider__slide" style="background-image: url(<?php echo get_theme_file_uri('images/apples.jpg'); ?>);">
-        <div class="hero-slider__interior container">
-            <div class="hero-slider__overlay">
-            <h2 class="headline headline--medium t-center">An Apple a Day</h2>
-            <p class="t-center">Our dentistry program recommends eating apples.</p>
-            <p class="t-center no-margin"><a href="#" class="btn btn--blue">Learn more</a></p>
-            </div>
-        </div>
-        </div>
-        <div class="hero-slider__slide" style="background-image: url(<?php echo get_theme_file_uri('images/bread.jpg'); ?>);">
-        <div class="hero-slider__interior container">
-            <div class="hero-slider__overlay">
-            <h2 class="headline headline--medium t-center">Free Food</h2>
-            <p class="t-center">Fictional University offers lunch plans for those in need.</p>
-            <p class="t-center no-margin"><a href="#" class="btn btn--blue">Learn more</a></p>
-            </div>
-        </div>
-        </div>
+		<?php
+			$featuredSlides = new WP_Query(array(
+				'post_type' => 'featured-slide',
+				'posts_per_page' => 4
+			));
+
+			if ($featuredSlides->have_posts()) :
+				while ($featuredSlides->have_posts()) : $featuredSlides->the_post();
+		?>
+       
+			<div class="hero-slider__slide" style="background-image: url(<?php echo get_field('slide_image'); ?>);">
+				<div class="hero-slider__interior container">
+					<div class="hero-slider__overlay">
+						<h2 class="headline headline--medium t-center"><?php the_field('slide_title'); ?></h2>
+						<p class="t-center"><?php the_field('slide_subtitle'); ?></p>
+						<p class="t-center no-margin">
+							<a href="<?php if (get_field('slide_button_link') == '') echo "#"; else echo get_field('slide_button_link'); ?>" class="btn btn--blue">
+								<?php the_field('slide_button_text'); ?>
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		<?php
+				endwhile;
+			endif;
+			wp_reset_postdata();
+		?>
     </div>
     <div class="slider__bullets glide__bullets" data-glide-el="controls[nav]"></div>
     </div>
